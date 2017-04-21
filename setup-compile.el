@@ -12,29 +12,40 @@
 ;; sensible compile command for the given buffer. Essentially it checks to
 ;; see if there's a Makefile in the directory and, if there isn't, it builds
 ;; a command that should do the job.
-;;
-;; For now it's kind of hard-coded for C/C++ compilation. This could (and
-;; should) easily change -- although I've been using this code more or less
-;; as-is since the late 1990s.
 
 ;;; Code:
 
+(defvar setup-compile-default-commands
+  '((c-mode   . "gcc -Wall -O2 {{src}} -o {{exe}}")
+    (c++-mode . "g++ -Wall -O2 {{src}} -o {{exe}}"))
+  "List of default commands based on major mode names.")
+
 ;;;###autoload
-(defun setup-compile (default-command)
+(defun setup-compile (&optional default-command)
   "Setup the compile command for a buffer.
 
 DEFAULT-COMMAND is the command to use if no other sensible
-command can be found."
+command can be found.
+
+Default commands can be found in `setup-compile-default-commands'.
+
+Defaults commands, either from DEFAULT-COMMAND or from
+`setup-compile-default-commands', can contain the following replaceable tokens:
+
+  {{src}} - The full path to the source file.
+  {{exe}} - The possible resulting executable name (this is the source
+            file with the path and extension removed)."
   (interactive "sDefault compile command: \n")
   (or (file-exists-p "GNUmakefile")
       (file-exists-p "makefile")
       (file-exists-p "Makefile")
-      (progn
-        (make-local-variable 'compile-command)
-        (setq compile-command
-              (concat default-command " " buffer-file-name
-                      " -o " (file-name-sans-extension
-                              (file-name-nondirectory (buffer-file-name))))))))
+      (let ((cmd (or (cdr (assoc 'c-mode setup-compile-default-commands)) default-command)))
+        (when cmd
+          (set (make-local-variable 'compile-command)
+               (replace-regexp-in-string
+                "{{exe}}" (file-name-sans-extension (file-name-nondirectory buffer-file-name))
+                (replace-regexp-in-string
+                 "{{src}}" buffer-file-name cmd)))))))
 
 (provide 'setup-compile)
 
