@@ -25,8 +25,8 @@
 
 (defcustom setup-compile-default-commands
   (list
-   (c-mode   . "gcc -Wall -O2 {{src}} -o {{exe}}")
-   (c++-mode . "g++ -Wall -O2 {{src}} -o {{exe}}"))
+   (cons 'c-mode   "gcc -Wall -O2 {{src}} -o {{exe}}")
+   (cons 'c++-mode "g++ -Wall -O2 {{src}} -o {{exe}}"))
   "List of default commands based on major mode names."
   :type '(repeat
           (cons :tag "Compile command"
