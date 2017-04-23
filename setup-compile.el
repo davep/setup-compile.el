@@ -39,7 +39,7 @@ Defaults commands, either from DEFAULT-COMMAND or from
   (or (file-exists-p "GNUmakefile")
       (file-exists-p "makefile")
       (file-exists-p "Makefile")
-      (let ((cmd (or (cdr (assoc 'c-mode setup-compile-default-commands)) default-command)))
+      (let ((cmd (or (cdr (assoc major-mode setup-compile-default-commands)) default-command)))
         (when cmd
           (set (make-local-variable 'compile-command)
                (replace-regexp-in-string
