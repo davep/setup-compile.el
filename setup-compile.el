@@ -18,10 +18,21 @@
 
 ;;; Code:
 
-(defvar setup-compile-default-commands
-  '((c-mode   . "gcc -Wall -O2 {{src}} -o {{exe}}")
-    (c++-mode . "g++ -Wall -O2 {{src}} -o {{exe}}"))
-  "List of default commands based on major mode names.")
+(defgroup setup-compile nil
+  "Command for setting up a compile command."
+  :group  'convenience
+  :prefix "setup-compile-")
+
+(defcustom setup-compile-default-commands
+  (list
+   (c-mode   . "gcc -Wall -O2 {{src}} -o {{exe}}")
+   (c++-mode . "g++ -Wall -O2 {{src}} -o {{exe}}"))
+  "List of default commands based on major mode names."
+  :type '(repeat
+          (cons :tag "Compile command"
+                (symbol :tag "Major mode")
+                (string :tag "Compile command")))
+  :group 'setup-compile)
 
 ;;;###autoload
 (defun setup-compile (&optional default-command)
