@@ -6,6 +6,9 @@
 ;; Keywords: convenience
 ;; URL: https://github.com/davep/setup-compile.el
 
+;; setup-compile.el is free software distributed under the terms of the GNU
+;; General Public Licence, version 2. For details see the file COPYING.
+
 ;;; Commentary:
 ;;
 ;; setup-compile.el provides a command that makes it easy to quickly set a
