@@ -25,8 +25,9 @@
 
 (defcustom setup-compile-default-commands
   (list
-   (cons 'c-mode   "gcc -Wall -O2 {{src}} -o {{exe}}")
-   (cons 'c++-mode "g++ -Wall -O2 {{src}} -o {{exe}}"))
+   (cons 'c-mode          "gcc -Wall -O2 {{src}} -o {{exe}}")
+   (cons 'c++-mode        "g++ -Wall -O2 {{src}} -o {{exe}}")
+   (cons 'emacs-lisp-mode "emacs -batch -f batch-byte-compile {{src}}"))
   "List of default commands based on major mode names."
   :type '(repeat
           (cons :tag "Compile command"
