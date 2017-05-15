@@ -51,16 +51,17 @@ Defaults commands, either from DEFAULT-COMMAND or from
   {{exe}} - The possible resulting executable name (this is the source
             file with the path and extension removed)."
   (interactive "sDefault compile command: \n")
-  (or (file-exists-p "GNUmakefile")
-      (file-exists-p "makefile")
-      (file-exists-p "Makefile")
-      (let ((cmd (or (cdr (assoc major-mode setup-compile-default-commands)) default-command)))
-        (when cmd
-          (set (make-local-variable 'compile-command)
-               (replace-regexp-in-string
-                "{{exe}}" (file-name-sans-extension (file-name-nondirectory buffer-file-name))
-                (replace-regexp-in-string
-                 "{{src}}" buffer-file-name cmd)))))))
+  (when buffer-file-name
+    (or (file-exists-p "GNUmakefile")
+        (file-exists-p "makefile")
+        (file-exists-p "Makefile")
+        (let ((cmd (or (cdr (assoc major-mode setup-compile-default-commands)) default-command)))
+          (when cmd
+            (set (make-local-variable 'compile-command)
+                 (replace-regexp-in-string
+                  "{{exe}}" (file-name-sans-extension (file-name-nondirectory buffer-file-name))
+                  (replace-regexp-in-string
+                   "{{src}}" buffer-file-name cmd))))))))
 
 (provide 'setup-compile)
 
